@@ -1,0 +1,42 @@
+<zk xmlns:n="native" xmlns:w="http://www.zkoss.org/2005/zk/client">
+    <?page title="${labels.login.title}"?>
+    <style>
+        .form {
+            border: 1px solid #E1E1E1;
+            padding: 20px 20px;
+            -webkit-border-radius:4px;
+            -moz-border-radius:4px;
+            border-radius:4px;
+            position: absolute;
+            left: 50%;
+            top: 60%;
+            margin-left: -220px;
+            margin-top: -60px;
+            width: 400px;
+        }
+    </style>
+        <image src="/images/logo.png" style="padding: 20px"/>
+        <div style="text-align: center; margin-bottom: 5px">
+            <label value="${labels.login.welcome}"/>
+        </div>
+        <space orient="horizontal" bar="true" spacing="20px" />
+        <div class="form">
+            <n:form action="/admin/login" method="POST">
+                <grid>
+                    <rows>
+                        <row>
+                            <cell style="text-align:right"><label value="${labels.login.user.name}"/></cell>
+                            <cell><textbox id="login" name="username" value="" width="150px" tabindex="1" focus="true"/></cell>
+                        </row>
+                        <row>
+                            <cell style="text-align:right"><label value="${labels.login.password}"/></cell>
+                            <cell><textbox id="pass" name="password" value="" type="password" width="150px" tabindex="2"/></cell>
+                        </row>
+                    </rows>
+                </grid>
+                <div style="text-align: center">
+                    <button id="conf" type="submit" label="${labels.login.enter}" style="margin-top: 20px"/>
+                </div>
+            </n:form>
+        </div>
+</zk>

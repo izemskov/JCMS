@@ -1,0 +1,59 @@
+<zk>
+    <window id="addEditContentForm" title="${labels.addEditContent.title.add}" border="normal" width="900px"
+            apply="ru.develgame.jcms.composers.admin.AddEditContentComposer">
+
+        <grid>
+            <rows>
+                <row>
+                    <label value="${labels.addEditContent.label.name}"/>
+                    <textbox id="nameTextBox" value="" width="100%"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditContent.label.fullName}"/>
+                    <textbox id="fullNameTextBox" value="" width="100%"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditContent.label.link}"/>
+                    <textbox id="linkTextBox" value="" width="100%"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditContent.label.parent}"/>
+                    <combobox id="parentComboBox" model="${$composer.parentModel}" readonly="true"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditContent.label.content}"/>
+                    <textbox id="contentTextBox" multiline="true" rows="10" cols="43"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditContent.label.order}"/>
+                    <textbox id="orderTextBox" value="" width="100%"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditContent.label.metaTitle}"/>
+                    <textbox id="metaTitleTextBox" multiline="true" rows="5" cols="43"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditContent.label.metaDescription}"/>
+                    <textbox id="metaDescriptionTextBox" multiline="true" rows="5" cols="43"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditContent.label.metaKeywords}"/>
+                    <textbox id="metaKeywordsTextBox" multiline="true" rows="5" cols="43"/>
+                </row>
+            </rows>
+        </grid>
+
+        <hlayout style="text-align: right; margin-top: 10px;">
+            <button id="okButton" label="${labels.addEditContent.button.label.ok}"/>
+            <button id="cancelButton" label="${labels.addEditContent.button.label.cancel}"/>
+        </hlayout>
+    </window>
+</zk>

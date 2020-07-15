@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk>
+    <config-name>jcms</config-name>
+
+    <client-config>
+        <click-filter-delay>0</click-filter-delay>
+        <debug-js>false</debug-js>
+        <error-reload>
+            <device-type>ajax</device-type>
+            <error-code>301</error-code>
+            <reload-uri></reload-uri>
+        </error-reload>
+        <keep-across-visits>true</keep-across-visits>
+        <processing-prompt-delay>900</processing-prompt-delay>
+        <tooltip-delay>800</tooltip-delay>
+        <resend-delay>9000</resend-delay>
+    </client-config>
+
+    <session-config>
+        <device-type>ajax</device-type>
+        <timeout-message>script:session_timed_out()</timeout-message>
+    </session-config>
+
+    <library-property><name>org.zkoss.zul.progressbox.position</name><value>center</value></library-property>
+    <library-property><name>org.zkoss.web.preferred.locale</name><value>en</value></library-property>
+</zk>
+
