@@ -23,9 +23,26 @@ import java.util.Map;
 public class ContentsRowRender implements RowRenderer<Content> {
     private List<Content> delContentsList = new ArrayList<>();
 
+    private String indentsContent(Content content) {
+        int level = 0;
+        Content parentContent = content.getParentContent();
+        while (parentContent != null) {
+            level++;
+            parentContent = parentContent.getParentContent();
+        }
+
+        StringBuilder res = new StringBuilder(content.getName());
+        for (int i = 0; i < level * 4; i++)
+            res.insert(0, " ");
+
+        return res.toString();
+    }
+
     @Override
     public void render(Row row, Content content, int i) throws Exception {
-        row.appendChild(new Label(content.getName()));
+        Label nameLabel = new Label(indentsContent(content));
+        nameLabel.setPre(true);
+        row.appendChild(nameLabel);
         row.appendChild(new Label(content.getLink()));
 
         Button buttonEdit = new Button(Labels.getLabel("contents.table.column.edit"));
@@ -34,7 +51,7 @@ public class ContentsRowRender implements RowRenderer<Content> {
             args.put("contentId", Long.toString(content.getId()));
 
             Window window = (Window) Executions.createComponents(
-                    "~./widgets/addEditContent.zul", null, args);
+                    "~./admin/widgets/addEditContent.zul", null, args);
             window.doModal();
         });
         Cell cell = new Cell();

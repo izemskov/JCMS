@@ -11,20 +11,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventQueue;
 import org.zkoss.zk.ui.event.EventQueues;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.*;
+import ru.develgame.jcms.CommonFunctions;
 import ru.develgame.jcms.entities.Content;
 import ru.develgame.jcms.repositories.ContentRepository;
 
-import java.util.Arrays;
-import java.util.Set;
+import java.util.*;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class AddEditContentComposer extends SelectorComposer {
@@ -40,20 +43,33 @@ public class AddEditContentComposer extends SelectorComposer {
     @Wire private Textbox metaKeywordsTextBox;
 
     @WireVariable private ContentRepository contentRepository;
-
     @WireVariable private PlatformTransactionManager transactionManager;
+    @WireVariable private CommonFunctions commonFunctions;
 
     private TransactionTemplate transactionTemplate = null;
 
     private ListModelList<Content> parentModel;
 
+    private Content content = null;
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private void refreshParentModel(Content exclude) {
+        parentModel = new ListModelList<>();
+        Content nullParent = new Content();
+        nullParent.setName("");
+        parentModel.add(nullParent);
+
+        List<Content> res = new ArrayList<>();
+        commonFunctions.addRecursContentsToDataModel(res, null, exclude);
+
+        parentModel.addAll(res);
+        parentModel.setSelection(Arrays.asList(parentModel.getInnerList().get(0)));
+    }
 
     public ListModelList<Content> getParentModel() {
         if (parentModel == null) {
-            parentModel = new ListModelList<>(contentRepository.findAll());
-            if (!parentModel.getInnerList().isEmpty())
-                parentModel.setSelection(Arrays.asList(parentModel.getInnerList().get(0)));
+            refreshParentModel(null);
         }
 
         return parentModel;
@@ -64,6 +80,51 @@ public class AddEditContentComposer extends SelectorComposer {
             transactionTemplate = new TransactionTemplate(transactionManager);
 
         return transactionTemplate;
+    }
+
+    @Override
+    public void doAfterCompose(Component comp) throws Exception {
+        super.doAfterCompose(comp);
+
+        addEditContentForm.addEventListener("onCustomClose", event -> {
+            addEditContentForm.detach();
+        });
+
+        String contentIdStr = (String) Executions.getCurrent().getArg().get("contentId");
+        if (contentIdStr != null && !contentIdStr.isEmpty()) {
+            try {
+                long contentId = Long.parseLong(contentIdStr);
+                Optional<Content> byId = contentRepository.findById(contentId);
+                if (!byId.isPresent()) {
+                    Messagebox.show(Labels.getLabel("addEditContent.error.contentNotFound"),
+                            null, 0,  Messagebox.ERROR);
+                    Events.postEvent("onCustomClose", addEditContentForm, null);
+                    return;
+                }
+                content = byId.get();
+
+                addEditContentForm.setTitle(Labels.getLabel("addEditContent.title.edit"));
+
+                nameTextBox.setText(content.getName());
+                fullNameTextBox.setText(content.getFullName());
+                linkTextBox.setText(content.getLink());
+                refreshParentModel(content);
+                parentComboBox.setModel(getParentModel());
+                if (content.getParentContent() != null)
+                    parentModel.setSelection(Arrays.asList(content.getParentContent()));
+                contentTextBox.setText(content.getContent());
+                orderTextBox.setText(Integer.toString(content.getOrderContent()));
+                metaTitleTextBox.setText(content.getMetaTitle());
+                metaDescriptionTextBox.setText(content.getMetaDescription());
+                metaKeywordsTextBox.setText(content.getMetaKeyword());
+            }
+            catch (NumberFormatException ex) {
+                Messagebox.show(Labels.getLabel("addEditContent.error.contentIdNan"),
+                        null, 0,  Messagebox.ERROR);
+                Events.postEvent("onCustomClose", addEditContentForm, null);
+                return;
+            }
+        }
     }
 
     @Listen("onClick = #cancelButton")
@@ -99,13 +160,18 @@ public class AddEditContentComposer extends SelectorComposer {
         // create build
         Integer status = getTransactionTemplate().execute(s -> {
             try {
-                Content content = new Content();
+                if (content == null)
+                    content = new Content();
                 content.setName(nameTextBox.getText());
                 content.setFullName(fullNameTextBox.getText());
                 content.setLink(fullNameTextBox.getText());
 
                 if (!selection.isEmpty()) {
-                    content.setParentContent(selection.iterator().next());
+                    Content parentContent = selection.iterator().next();
+                    if (!parentContent.getName().isEmpty())
+                        content.setParentContent(parentContent);
+                    else
+                        content.setParentContent(null);
                 }
 
                 content.setOrderContent(Integer.parseInt(orderTextBox.getText()));

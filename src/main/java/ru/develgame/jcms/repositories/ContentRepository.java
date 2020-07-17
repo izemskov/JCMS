@@ -9,5 +9,8 @@ package ru.develgame.jcms.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.develgame.jcms.entities.Content;
 
+import java.util.List;
+
 public interface ContentRepository extends JpaRepository<Content, Long> {
+    List<Content> findByParentContentOrderByOrderContent(Content parentContent);
 }

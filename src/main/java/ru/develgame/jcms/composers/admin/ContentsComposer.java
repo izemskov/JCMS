@@ -19,6 +19,7 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.*;
+import ru.develgame.jcms.CommonFunctions;
 import ru.develgame.jcms.entities.Content;
 import ru.develgame.jcms.renders.ContentsRowRender;
 import ru.develgame.jcms.repositories.ContentRepository;
@@ -31,20 +32,17 @@ import java.util.Map;
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class ContentsComposer extends SelectorComposer {
     @WireVariable private ContentRepository contentRepository;
+    @WireVariable private CommonFunctions commonFunctions;
 
-    @Wire
-    private Grid contentsGrid;
-
-    @Wire
-    private Button removeContentButton;
+    @Wire private Grid contentsGrid;
+    @Wire private Button removeContentButton;
 
     private ListModel<Content> contentsDataModel = null;
 
     private void refreshContentsDataModel() {
         List<Content> res = new ArrayList<>();
-        contentRepository.findAll(new Sort(Sort.Direction.DESC, "id")).forEach((t) -> {
-            res.add(t);
-        });
+
+        commonFunctions.addRecursContentsToDataModel(res, null, null);
 
         contentsDataModel = new ListModelList<>(res);
     }

@@ -21,7 +21,7 @@
 
                 <row>
                     <label value="${labels.addEditContent.label.parent}"/>
-                    <combobox id="parentComboBox" model="${$composer.parentModel}" readonly="true"/>
+                    <combobox id="parentComboBox" model="${$composer.parentModel}" itemRenderer="ru.develgame.jcms.renders.ContentsParentComboItemRender" readonly="true"/>
                 </row>
 
                 <row>

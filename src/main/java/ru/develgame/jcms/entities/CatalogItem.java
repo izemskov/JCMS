@@ -6,5 +6,5 @@
 
 package ru.develgame.jcms.entities;
 
-public class Photo {
+public class CatalogItem {
 }

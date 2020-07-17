@@ -7,6 +7,7 @@
 package ru.develgame.jcms.entities;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -121,5 +122,23 @@ public class Content {
 
     public void setMetaKeyword(String metaKeyword) {
         this.metaKeyword = metaKeyword;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Content content = (Content) o;
+        return getId() == content.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
