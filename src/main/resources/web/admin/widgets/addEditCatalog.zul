@@ -1,0 +1,49 @@
+<zk>
+    <window id="addEditCatalogForm" title="${labels.addEditCatalog.title.add}" border="normal" width="900px"
+            apply="ru.develgame.jcms.composers.admin.AddEditCatalogComposer">
+
+        <grid>
+            <rows>
+                <row>
+                    <label value="${labels.addEditCatalog.label.name}"/>
+                    <textbox id="nameTextBox" value="" width="100%"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditCatalog.label.link}"/>
+                    <textbox id="linkTextBox" value="" width="100%"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditCatalog.label.parent}"/>
+                    <combobox id="parentComboBox" model="${$composer.parentModel}" itemRenderer="ru.develgame.jcms.renders.CatalogsParentComboItemRender" readonly="true"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditCatalog.label.order}"/>
+                    <textbox id="orderTextBox" value="" width="100%"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditCatalog.label.metaTitle}"/>
+                    <textbox id="metaTitleTextBox" multiline="true" rows="5" cols="43"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditCatalog.label.metaDescription}"/>
+                    <textbox id="metaDescriptionTextBox" multiline="true" rows="5" cols="43"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditCatalog.label.metaKeywords}"/>
+                    <textbox id="metaKeywordsTextBox" multiline="true" rows="5" cols="43"/>
+                </row>
+            </rows>
+        </grid>
+
+        <hlayout style="text-align: right; margin-top: 10px;">
+            <button id="okButton" label="${labels.addEditCatalog.button.label.ok}"/>
+            <button id="cancelButton" label="${labels.addEditCatalog.button.label.cancel}"/>
+        </hlayout>
+    </window>
+</zk>

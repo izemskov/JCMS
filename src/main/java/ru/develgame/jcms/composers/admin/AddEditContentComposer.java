@@ -135,13 +135,13 @@ public class AddEditContentComposer extends SelectorComposer {
     @Listen("onClick = #okButton")
     public void okButtonOnClick() {
         if (nameTextBox.getText().isEmpty()) {
-            Messagebox.show(Labels.getLabel("addBuild.error.nameTextBoxEmpty"),
+            Messagebox.show(Labels.getLabel("addEditContent.error.nameTextBoxEmpty"),
                     null, 0,  Messagebox.EXCLAMATION);
             return;
         }
 
         if (orderTextBox.getText().isEmpty()) {
-            Messagebox.show(Labels.getLabel("addBuild.error.orderTextBoxEmpty"),
+            Messagebox.show(Labels.getLabel("addEditContent.error.orderTextBoxEmpty"),
                     null, 0,  Messagebox.EXCLAMATION);
             return;
         }
@@ -150,7 +150,7 @@ public class AddEditContentComposer extends SelectorComposer {
             Integer.parseInt(orderTextBox.getText());
         }
         catch (NumberFormatException ex) {
-            Messagebox.show(Labels.getLabel("addBuild.error.orderTextBoxNan"),
+            Messagebox.show(Labels.getLabel("addEditContent.error.orderTextBoxNan"),
                     null, 0,  Messagebox.EXCLAMATION);
             return;
         }
@@ -190,7 +190,7 @@ public class AddEditContentComposer extends SelectorComposer {
         });
 
         if (status != 0) {
-            Messagebox.show(Labels.getLabel("addBuild.error.someError"),
+            Messagebox.show(Labels.getLabel("addEditContent.error.someError"),
                     null, 0,  Messagebox.ERROR);
             return;
         }

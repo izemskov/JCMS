@@ -25,4 +25,9 @@ public class AdminController {
     public String contents() {
         return "admin/contents";
     }
+
+    @GetMapping("/admin/catalogs")
+    public String catalogs() {
+        return "admin/catalogs";
+    }
 }

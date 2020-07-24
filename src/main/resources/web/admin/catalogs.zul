@@ -1,0 +1,24 @@
+<zk>
+    <?page title="${labels.catalog.title}"?>
+
+    <div id="main_view" height="100%" width="100%" apply="ru.develgame.jcms.composers.admin.CatalogsComposer">
+        <include src="~./admin/widgets/mainmenu.zul"/>
+
+        <div align="right" style="margin-bottom: 10px;">
+            <button id="createCatalogButton" label="${labels.catalogs.button.label.createCatalog}"/>
+        </div>
+        <grid id="catalogsGrid" model="${$composer.catalogsDataModel}" rowRenderer="ru.develgame.jcms.renders.CatalogsRowRender">
+            <columns sizable="true">
+                <column label="${labels.catalogs.table.column.name}" width="100%"/>
+                <column label="${labels.catalogs.table.column.link}" width="250"/>
+
+                <column label="${labels.catalogs.table.column.edit}" width="150px"/>
+                <column label="${labels.catalogs.table.column.remove}" width="150px"/>
+            </columns>
+        </grid>
+
+        <div style="margin-top: 10px;">
+            <button id="removeCatalogButton" label="${labels.catalogs.button.label.remove}"/>
+        </div>
+    </div>
+</zk>

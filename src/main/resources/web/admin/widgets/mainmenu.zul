@@ -6,7 +6,7 @@
             <n:td width="100%" style="padding-left: 40px;">
                 <menubar id="menubar" autodrop="true">
                     <menuitem label="${labels.mainmenu.contents}" href="/admin/contents"/>
-                    <menuitem label="${labels.mainmenu.catalog}" href="/admin/catalog"/>
+                    <menuitem label="${labels.mainmenu.catalog}" href="/admin/catalogs"/>
                     <menuitem label="${labels.mainmenu.files}" href="/admin/files"/>
                     <menuitem label="${labels.mainmenu.meta}" href="/admin/meta"/>
                     <menuitem label="${labels.mainmenu.users}" href="/admin/users"/>
