@@ -1,0 +1,55 @@
+<zk>
+    <window id="addEditCatalogItemForm" title="${labels.addEditCatalogItem.title.add}" border="normal" width="900px"
+            apply="ru.develgame.jcms.composers.admin.AddEditCatalogItemComposer">
+
+        <grid>
+            <rows>
+                <row>
+                    <label value="${labels.addEditCatalogItem.label.name}"/>
+                    <textbox id="nameTextBox" value="" width="100%"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditCatalogItem.label.link}"/>
+                    <textbox id="linkTextBox" value="" width="100%"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditCatalogItem.label.catalogs}"/>
+                    <bandbox id="catalogsBandBox" width="100%" readonly="true">
+                        <bandpopup>
+                            <listbox id="catalogsListBox"  width="300px" height="250px" multiple="true"
+                                     checkmark="true" model="${$composer.catalogsDataModel}"
+                                     itemRenderer="ru.develgame.jcms.renders.CatalogsListItemRender"/>
+                        </bandpopup>
+                    </bandbox>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditCatalogItem.label.order}"/>
+                    <textbox id="orderTextBox" value="" width="100%"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditCatalogItem.label.metaTitle}"/>
+                    <textbox id="metaTitleTextBox" multiline="true" rows="5" cols="43"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditCatalogItem.label.metaDescription}"/>
+                    <textbox id="metaDescriptionTextBox" multiline="true" rows="5" cols="43"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditCatalogItem.label.metaKeywords}"/>
+                    <textbox id="metaKeywordsTextBox" multiline="true" rows="5" cols="43"/>
+                </row>
+            </rows>
+        </grid>
+
+        <hlayout style="text-align: right; margin-top: 10px;">
+            <button id="okButton" label="${labels.addEditCatalogItem.button.label.ok}"/>
+            <button id="cancelButton" label="${labels.addEditCatalogItem.button.label.cancel}"/>
+        </hlayout>
+    </window>
+</zk>

@@ -8,9 +8,10 @@ package ru.develgame.jcms.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.develgame.jcms.entities.Catalog;
+import ru.develgame.jcms.entities.CatalogItem;
 
 import java.util.List;
 
-public interface CatalogRepository extends JpaRepository<Catalog, Long> {
-    List<Catalog> findByParentCatalogOrderByOrderCatalog(Catalog parentCatalog);
+public interface CatalogItemRepository extends JpaRepository<CatalogItem, Long> {
+    List<CatalogItem> findByCatalogsOrderByOrderCatalogItem(Catalog parentCatalog);
 }

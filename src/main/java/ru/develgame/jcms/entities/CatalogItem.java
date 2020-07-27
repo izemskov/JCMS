@@ -19,16 +19,17 @@ public class CatalogItem {
 
     private String name;
     private String fullName;
+    private String link;
 
     private String photo;
 
-    @ManyToMany(mappedBy = "catalogItems", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "catalogItems", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Catalog> catalogs = new ArrayList<>();
 
     @Lob
     private String description;
 
-    private int orderContent;
+    private int orderCatalogItem;
 
     private String metaTitle;
     private String metaDescription;
@@ -83,12 +84,12 @@ public class CatalogItem {
         this.description = description;
     }
 
-    public int getOrderContent() {
-        return orderContent;
+    public int getOrderCatalogItem() {
+        return orderCatalogItem;
     }
 
-    public void setOrderContent(int orderContent) {
-        this.orderContent = orderContent;
+    public void setOrderCatalogItem(int orderCatalogItem) {
+        this.orderCatalogItem = orderCatalogItem;
     }
 
     public String getMetaTitle() {
@@ -113,6 +114,14 @@ public class CatalogItem {
 
     public void setMetaKeyword(String metaKeyword) {
         this.metaKeyword = metaKeyword;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 
     /* Overrided */

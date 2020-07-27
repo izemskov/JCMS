@@ -164,7 +164,7 @@ public class AddEditContentComposer extends SelectorComposer {
                     content = new Content();
                 content.setName(nameTextBox.getText());
                 content.setFullName(fullNameTextBox.getText());
-                content.setLink(fullNameTextBox.getText());
+                content.setLink(linkTextBox.getText());
 
                 if (!selection.isEmpty()) {
                     Content parentContent = selection.iterator().next();

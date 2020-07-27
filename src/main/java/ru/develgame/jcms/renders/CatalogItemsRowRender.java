@@ -13,31 +13,28 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventQueue;
 import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zul.*;
-import ru.develgame.jcms.entities.Catalog;
+import ru.develgame.jcms.entities.CatalogItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CatalogsRowRender implements RowRenderer<Catalog> {
-    private List<Catalog> delCatalogsList = new ArrayList<>();
+public class CatalogItemsRowRender implements RowRenderer<CatalogItem> {
+    private List<CatalogItem> delCatalogItemsList = new ArrayList<>();
 
     @Override
-    public void render(Row row, Catalog catalog, int i) throws Exception {
-        A a = new A(catalog.getName());
-        a.setHref("/admin/catalogs?catalogId=" + catalog.getId());
-        row.appendChild(a);
-
-        row.appendChild(new Label(catalog.getLink()));
+    public void render(Row row, CatalogItem catalogItem, int i) throws Exception {
+        row.appendChild(new Label(catalogItem.getName()));
+        row.appendChild(new Label(catalogItem.getLink()));
 
         Button buttonEdit = new Button(Labels.getLabel("catalogs.table.column.edit"));
         buttonEdit.addEventListener("onClick", t -> {
             Map<String, String> args = new HashMap<>();
-            args.put("catalogId", Long.toString(catalog.getId()));
+            args.put("catalogItemId", Long.toString(catalogItem.getId()));
 
             Window window = (Window) Executions.createComponents(
-                    "~./admin/widgets/addEditCatalog.zul", null, args);
+                    "~./admin/widgets/addEditCatalogItem.zul", null, args);
             window.doModal();
         });
         Cell cell = new Cell();
@@ -48,17 +45,17 @@ public class CatalogsRowRender implements RowRenderer<Catalog> {
         Checkbox checkbox = new Checkbox();
         checkbox.addEventListener("onCheck", t -> {
             if (((CheckEvent) t).isChecked()) {
-                delCatalogsList.add(catalog);
+                delCatalogItemsList.add(catalogItem);
             }
             else {
-                delCatalogsList.remove(catalog);
+                delCatalogItemsList.remove(catalogItem);
             }
 
-            EventQueue<Event> eq = EventQueues.lookup("delCatalogs", EventQueues.DESKTOP, true);
-            if (delCatalogsList.isEmpty())
-                eq.publish(new org.zkoss.zk.ui.event.Event("checkBoxDelCatalogs", null, "disable"));
+            EventQueue<Event> eq = EventQueues.lookup("delCatalogItems", EventQueues.DESKTOP, true);
+            if (delCatalogItemsList.isEmpty())
+                eq.publish(new org.zkoss.zk.ui.event.Event("checkBoxDelCatalogItems", null, "disable"));
             else
-                eq.publish(new org.zkoss.zk.ui.event.Event("checkBoxDelCatalogs", null, "enable"));
+                eq.publish(new org.zkoss.zk.ui.event.Event("checkBoxDelCatalogItems", null, "enable"));
         });
 
         cell = new Cell();
@@ -67,7 +64,7 @@ public class CatalogsRowRender implements RowRenderer<Catalog> {
         row.appendChild(cell);
     }
 
-    public List<Catalog> getDelCatalogsList() {
-        return delCatalogsList;
+    public List<CatalogItem> getDelCatalogItemsList() {
+        return delCatalogItemsList;
     }
 }

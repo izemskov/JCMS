@@ -20,5 +20,22 @@
         <div style="margin-top: 10px;">
             <button id="removeCatalogButton" label="${labels.catalogs.button.label.remove}"/>
         </div>
+
+        <div align="right" style="margin-bottom: 10px; margin-top: 20px;">
+            <button id="createCatalogItemButton" label="${labels.catalogs.button.label.createCatalogItem}"/>
+        </div>
+        <grid id="catalogItemsGrid" model="${$composer.catalogItemsDataModel}" rowRenderer="ru.develgame.jcms.renders.CatalogItemsRowRender">
+            <columns sizable="true">
+                <column label="${labels.catalogs.table.column.name}" width="100%"/>
+                <column label="${labels.catalogs.table.column.link}" width="250"/>
+
+                <column label="${labels.catalogs.table.column.edit}" width="150px"/>
+                <column label="${labels.catalogs.table.column.remove}" width="150px"/>
+            </columns>
+        </grid>
+
+        <div style="margin-top: 10px;">
+            <button id="removeCatalogItemButton" label="${labels.catalogs.button.label.removeItem}"/>
+        </div>
     </div>
 </zk>
