@@ -26,6 +26,17 @@
                 </row>
 
                 <row>
+                    <label value="${labels.addEditCatalogItem.label.photo}"/>
+                    <cell>
+                        <button id="uploadBtn" label="Upload" upload="true"/>
+                        <separator />
+                        <image id="img" />
+                        <separator />
+                        <label id="msgLb" />
+                    </cell>
+                </row>
+
+                <row>
                     <label value="${labels.addEditCatalogItem.label.order}"/>
                     <textbox id="orderTextBox" value="" width="100%"/>
                 </row>
