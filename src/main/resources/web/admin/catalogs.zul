@@ -10,7 +10,7 @@
         <grid id="catalogsGrid" model="${$composer.catalogsDataModel}" rowRenderer="ru.develgame.jcms.renders.CatalogsRowRender">
             <columns sizable="true">
                 <column label="${labels.catalogs.table.column.name}" width="100%"/>
-                <column label="${labels.catalogs.table.column.link}" width="250"/>
+                <column label="${labels.catalogs.table.column.link}" width="250px"/>
 
                 <column label="${labels.catalogs.table.column.edit}" width="150px"/>
                 <column label="${labels.catalogs.table.column.remove}" width="150px"/>
@@ -26,8 +26,9 @@
         </div>
         <grid id="catalogItemsGrid" model="${$composer.catalogItemsDataModel}" rowRenderer="ru.develgame.jcms.renders.CatalogItemsRowRender">
             <columns sizable="true">
+                <column label="${labels.catalogs.table.column.image}" width="200px"/>
                 <column label="${labels.catalogs.table.column.name}" width="100%"/>
-                <column label="${labels.catalogs.table.column.link}" width="250"/>
+                <column label="${labels.catalogs.table.column.link}" width="250px"/>
 
                 <column label="${labels.catalogs.table.column.edit}" width="150px"/>
                 <column label="${labels.catalogs.table.column.remove}" width="150px"/>

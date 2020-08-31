@@ -13,8 +13,12 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventQueue;
 import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zul.*;
+import ru.develgame.jcms.CommonFunctions;
 import ru.develgame.jcms.entities.CatalogItem;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +29,17 @@ public class CatalogItemsRowRender implements RowRenderer<CatalogItem> {
 
     @Override
     public void render(Row row, CatalogItem catalogItem, int i) throws Exception {
+        if (catalogItem.getPhoto() != null && !catalogItem.getPhoto().isEmpty()) {
+            File file = new File(CommonFunctions.getStaticCatalogItemSavePathSmall(), catalogItem.getPhoto());
+            BufferedImage in = ImageIO.read(file);
+            Image image = new Image();
+            image.setContent(in);
+            image.setWidth("200px");
+            row.appendChild(image);
+        }
+        else {
+            row.appendChild(new Label(""));
+        }
         row.appendChild(new Label(catalogItem.getName()));
         row.appendChild(new Label(catalogItem.getLink()));
 

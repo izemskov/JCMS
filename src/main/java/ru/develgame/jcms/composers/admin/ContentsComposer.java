@@ -7,7 +7,10 @@
 package ru.develgame.jcms.composers.admin;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
+import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -37,7 +40,11 @@ public class ContentsComposer extends SelectorComposer {
     @Wire private Grid contentsGrid;
     @Wire private Button removeContentButton;
 
+    @WireVariable private PlatformTransactionManager transactionManager;
+
     private ListModel<Content> contentsDataModel = null;
+
+    private TransactionTemplate transactionTemplate = null;
 
     private void refreshContentsDataModel() {
         List<Content> res = new ArrayList<>();
@@ -53,6 +60,13 @@ public class ContentsComposer extends SelectorComposer {
         }
 
         return contentsDataModel;
+    }
+
+    public TransactionTemplate getTransactionTemplate() {
+        if (transactionTemplate == null)
+            transactionTemplate = new TransactionTemplate(transactionManager);
+
+        return transactionTemplate;
     }
 
     @Override
@@ -90,9 +104,21 @@ public class ContentsComposer extends SelectorComposer {
         RowRenderer<Content> rowRenderer = contentsGrid.getRowRenderer();
         List<Content> delTemplatesList = ((ContentsRowRender) rowRenderer).getDelContentsList();
 
-        delTemplatesList.forEach(t -> {
-
+        Integer status = getTransactionTemplate().execute(transactionStatus -> {
+            try {
+                contentRepository.deleteAll(delTemplatesList);
+                return 0;
+            }
+            catch (Exception ex) {
+                return 1;
+            }
         });
+
+        if (status != 0) {
+            Messagebox.show(Labels.getLabel("content.error.cannotRemove"),
+                    null, 0,  Messagebox.ERROR);
+            return;
+        }
 
         refreshContentsDataModel();
         contentsGrid.setModel(contentsDataModel);

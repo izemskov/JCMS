@@ -6,12 +6,13 @@
 
 package ru.develgame.jcms.repositories;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import ru.develgame.jcms.entities.SecurityUser;
 
 import java.util.Optional;
 
-public interface SecurityUserRepository extends CrudRepository<SecurityUser, Long> {
+public interface SecurityUserRepository extends JpaRepository<SecurityUser, Long> {
     Optional<SecurityUser> findById(Long id);
     SecurityUser findByName(String name);
 }

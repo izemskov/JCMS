@@ -30,4 +30,9 @@ public class AdminController {
     public String catalogs() {
         return "admin/catalogs";
     }
+
+    @GetMapping("/admin/users")
+    public String users() {
+        return "admin/users";
+    }
 }

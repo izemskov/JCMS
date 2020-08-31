@@ -10,7 +10,7 @@
         <grid id="contentsGrid" model="${$composer.contentsDataModel}" rowRenderer="ru.develgame.jcms.renders.ContentsRowRender">
             <columns sizable="true">
                 <column label="${labels.contents.table.column.name}" width="100%"/>
-                <column label="${labels.contents.table.column.link}" width="250"/>
+                <column label="${labels.contents.table.column.link}" width="250px"/>
 
                 <column label="${labels.contents.table.column.edit}" width="150px"/>
                 <column label="${labels.contents.table.column.remove}" width="150px"/>

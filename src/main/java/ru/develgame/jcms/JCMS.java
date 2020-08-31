@@ -12,6 +12,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class JCMS {
     public static void main(String[] args) {
-        SpringApplication.run(JCMS.class);
+        SpringApplication.run(JCMS.class, args);
     }
 }

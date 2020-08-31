@@ -41,11 +41,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.zkoss.themepack</groupId>    <!-- >=8.6.1   -->
-            <!--<groupId>org.zkoss.theme</groupId>--> <!-- <=8.6.0.1 -->
-            <artifactId>theme-pack</artifactId>
-        </dependency>
 
         <!-- Spring Security -->
         <dependency>
@@ -78,6 +73,13 @@
             <version>1.61</version>
         </dependency>
 
+        <!-- Thymeleaf -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <!-- Others -->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>

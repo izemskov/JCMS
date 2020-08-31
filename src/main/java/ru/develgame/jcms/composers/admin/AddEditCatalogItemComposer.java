@@ -6,8 +6,10 @@
 
 package ru.develgame.jcms.composers.admin;
 
+import org.hibernate.id.GUIDGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.zkoss.util.media.Media;
@@ -46,8 +48,7 @@ public class AddEditCatalogItemComposer extends SelectorComposer {
     @Wire private Textbox metaKeywordsTextBox;
     @Wire private Image img;
 
-    private static final int FILE_SIZE = 30000;// 100k
-    private static final String SAVE_PATH = "c:/test/1234";
+    private static final int FILE_SIZE = 30000;
 
     @WireVariable private CommonFunctions commonFunctions;
     @WireVariable private CatalogRepository catalogRepository;
@@ -59,6 +60,8 @@ public class AddEditCatalogItemComposer extends SelectorComposer {
     private ListModelList<Catalog> catalogsDataModel = null;
 
     private CatalogItem catalogItem = null;
+
+    private String imageGUID = null;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -160,20 +163,20 @@ public class AddEditCatalogItemComposer extends SelectorComposer {
         catalogsBandBox.setValue(str.toString());
     }
 
-    private void saveFile(Media media) throws IOException {
+    private void saveFile(Media media, String filename) throws IOException {
         BufferedInputStream in = null;
         BufferedOutputStream out = null;
         try {
             InputStream fin = media.getStreamData();
             in = new BufferedInputStream(fin);
 
-            File baseDir = new File(SAVE_PATH);
+            File baseDir = new File(commonFunctions.getCatalogItemSavePath());
 
             if (!baseDir.exists()) {
                 baseDir.mkdirs();
             }
 
-            File file = new File(SAVE_PATH, media.getName());
+            File file = new File(commonFunctions.getCatalogItemSavePath(), filename);
 
             OutputStream fout = new FileOutputStream(file);
             out = new BufferedOutputStream(fout);
@@ -221,9 +224,10 @@ public class AddEditCatalogItemComposer extends SelectorComposer {
         }
 
         try {
-            saveFile(media);
+            imageGUID = UUID.randomUUID().toString() + ".png";
+            saveFile(media, imageGUID);
 
-            File file = new File(SAVE_PATH, media.getName());
+            File file = new File(commonFunctions.getCatalogItemSavePath(), imageGUID);
             BufferedImage in = ImageIO.read(file);
             if (in == null) {
                 Messagebox.show(Labels.getLabel("addEditCatalogItem.error.readImage"),
@@ -231,9 +235,14 @@ public class AddEditCatalogItemComposer extends SelectorComposer {
                 return;
             }
 
-            //190
-            BufferedImage resizedCopy = commonFunctions.createResizedCopy(in, 400, 0);
-            //ImageIO.write(resizedCopy, "png", outputfile);
+            // TODO - set size from outside
+            BufferedImage resizedCopyBig = commonFunctions.createResizedCopy(in, 400, 0);
+            File fileBig = new File(commonFunctions.getCatalogItemSavePathBig(), imageGUID);
+            ImageIO.write(resizedCopyBig, "png", fileBig);
+
+            BufferedImage resizedCopySmall = commonFunctions.createResizedCopy(in, 190, 0);
+            File fileSmall = new File(commonFunctions.getCatalogItemSavePathSmall(), imageGUID);
+            ImageIO.write(resizedCopySmall, "png", fileSmall);
         }
         catch (IOException e) {
             logger.warn("", e);
@@ -299,6 +308,9 @@ public class AddEditCatalogItemComposer extends SelectorComposer {
                 catalogItem.setMetaTitle(metaTitleTextBox.getText());
                 catalogItem.setMetaDescription(metaDescriptionTextBox.getText());
                 catalogItem.setMetaKeyword(metaKeywordsTextBox.getText());
+
+                if (imageGUID != null && !imageGUID.isEmpty())
+                    catalogItem.setPhoto(imageGUID);
 
                 catalogItem.getCatalogs().clear();
                 addCatalogs.forEach(t -> {

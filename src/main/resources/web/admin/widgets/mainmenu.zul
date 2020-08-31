@@ -1,7 +1,7 @@
 <zk xmlns:n="native" xmlns:w="http://www.zkoss.org/2005/zk/client">
     <n:table>
         <n:tr>
-            <n:td><a href="/"><image src="/images/logo.png" style="padding: 20px"/></a></n:td>
+            <n:td><a href="/admin"><image src="/images/logo.png" style="padding: 20px"/></a></n:td>
 
             <n:td width="100%" style="padding-left: 40px;">
                 <menubar id="menubar" autodrop="true">

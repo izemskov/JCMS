@@ -24,7 +24,7 @@ public class Content {
     @JoinColumn(name = "parent_id")
     private Content parentContent;
 
-    @OneToMany(mappedBy = "parentContent")
+    @OneToMany(mappedBy = "parentContent", cascade = CascadeType.REMOVE)
     private Set<Content> childrenContents;
 
     @Lob

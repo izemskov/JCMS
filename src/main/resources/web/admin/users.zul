@@ -1,0 +1,22 @@
+<zk>
+    <?page title="${labels.users.title}"?>
+
+    <div id="main_view" height="100%" width="100%" apply="ru.develgame.jcms.composers.admin.UsersComposer">
+        <include src="~./admin/widgets/mainmenu.zul"/>
+
+        <div align="right" style="margin-bottom: 10px;">
+            <button id="createUserButton" label="${labels.users.button.label.createUser}"/>
+        </div>
+        <grid id="usersGrid" model="${$composer.usersDataModel}" rowRenderer="ru.develgame.jcms.renders.UsersRowRender">
+            <columns sizable="true">
+                <column label="${labels.users.table.column.name}" width="100%"/>
+                <column label="${labels.users.table.column.edit}" width="150px"/>
+                <column label="${labels.users.table.column.remove}" width="150px"/>
+            </columns>
+        </grid>
+
+        <div style="margin-top: 10px;">
+            <button id="removeUserButton" label="${labels.users.button.label.remove}"/>
+        </div>
+    </div>
+</zk>

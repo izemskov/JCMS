@@ -7,12 +7,14 @@
 package ru.develgame.jcms;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.develgame.jcms.entities.Catalog;
 import ru.develgame.jcms.entities.Content;
 import ru.develgame.jcms.repositories.CatalogRepository;
 import ru.develgame.jcms.repositories.ContentRepository;
 
+import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -26,6 +28,39 @@ public class CommonFunctions {
 
     @Autowired
     private CatalogRepository catalogRepository;
+
+    @Value("${catalogItemSavePath}")
+    private String catalogItemSavePath;
+
+    @Value("${catalogItemSavePathSmall}")
+    private String catalogItemSavePathSmall;
+
+    @Value("${catalogItemSavePathBig}")
+    private String catalogItemSavePathBig;
+
+    public String getCatalogItemSavePath() {
+        return catalogItemSavePath;
+    }
+
+    public String getCatalogItemSavePathSmall() {
+        return catalogItemSavePathSmall;
+    }
+
+    public String getCatalogItemSavePathBig() {
+        return catalogItemSavePathBig;
+    }
+
+    // For access from RowRender
+    private static String staticCatalogItemSavePathSmall;
+
+    public static String getStaticCatalogItemSavePathSmall() {
+        return staticCatalogItemSavePathSmall;
+    }
+
+    @PostConstruct
+    public void init() {
+        staticCatalogItemSavePathSmall = catalogItemSavePathSmall;
+    }
 
     public void addRecursContentsToDataModel(List<Content> res, Content parent, Content exclude) {
         List<Content> byParentContent = contentRepository.findByParentContentOrderByOrderContent(parent);
