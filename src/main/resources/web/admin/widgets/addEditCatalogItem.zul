@@ -31,8 +31,6 @@
                         <button id="uploadBtn" label="Upload" upload="true"/>
                         <separator />
                         <image id="img" />
-                        <separator />
-                        <label id="msgLb" />
                     </cell>
                 </row>
 

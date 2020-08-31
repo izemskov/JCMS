@@ -27,7 +27,10 @@ import ru.develgame.jcms.entities.CatalogItem;
 import ru.develgame.jcms.repositories.CatalogItemRepository;
 import ru.develgame.jcms.repositories.CatalogRepository;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -42,7 +45,6 @@ public class AddEditCatalogItemComposer extends SelectorComposer {
     @Wire private Textbox metaDescriptionTextBox;
     @Wire private Textbox metaKeywordsTextBox;
     @Wire private Image img;
-    @Wire private Label msgLb;
 
     private static final int FILE_SIZE = 30000;// 100k
     private static final String SAVE_PATH = "c:/test/1234";
@@ -158,7 +160,7 @@ public class AddEditCatalogItemComposer extends SelectorComposer {
         catalogsBandBox.setValue(str.toString());
     }
 
-    private void saveFile(Media media) {
+    private void saveFile(Media media) throws IOException {
         BufferedInputStream in = null;
         BufferedOutputStream out = null;
         try {
@@ -181,13 +183,6 @@ public class AddEditCatalogItemComposer extends SelectorComposer {
                 out.write(buffer, 0, ch);
                 ch = in.read(buffer);
             }
-            msgLb.setValue("sucessed upload :" + media.getName());
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        catch (Exception e) {
-            throw new RuntimeException(e);
         }
         finally {
             try {
@@ -208,22 +203,48 @@ public class AddEditCatalogItemComposer extends SelectorComposer {
     public void onUpload(UploadEvent event) {
         Media media = event.getMedia();
 
-        if (media == null){
-            msgLb.setValue("please select a file");
+        if (media == null) {
+            Messagebox.show(Labels.getLabel("addEditCatalogItem.error.selectFile"),
+                    null, 0,  Messagebox.EXCLAMATION);
             return;
         }
 
         String type = media.getContentType().split("/")[0];
         if (type.equals("image")) {
             if (media.getByteData().length > FILE_SIZE * 1024) {
-                msgLb.setValue("File size limit " + FILE_SIZE + "k");
+                Messagebox.show(Labels.getLabel("addEditCatalogItem.error.limitFileSize") + FILE_SIZE + "k",
+                        null, 0,  Messagebox.EXCLAMATION);
                 return;
             }
             org.zkoss.image.Image picture = (org.zkoss.image.Image) media;
             img.setContent(picture);
         }
 
-        saveFile(media);
+        try {
+            saveFile(media);
+
+            File file = new File(SAVE_PATH, media.getName());
+            BufferedImage in = ImageIO.read(file);
+            if (in == null) {
+                Messagebox.show(Labels.getLabel("addEditCatalogItem.error.readImage"),
+                        null, 0,  Messagebox.EXCLAMATION);
+                return;
+            }
+
+            //190
+            BufferedImage resizedCopy = commonFunctions.createResizedCopy(in, 400, 0);
+            //ImageIO.write(resizedCopy, "png", outputfile);
+        }
+        catch (IOException e) {
+            logger.warn("", e);
+            Messagebox.show(Labels.getLabel("addEditCatalogItem.error.limitFileSize", Arrays.asList(FILE_SIZE).toArray()),
+                    null, 0,  Messagebox.EXCLAMATION);
+        }
+        catch (Exception e) {
+            logger.warn("", e);
+            Messagebox.show(Labels.getLabel("addEditCatalogItem.error.CannotResizeImage"),
+                    null, 0,  Messagebox.EXCLAMATION);
+        }
     }
 
     @Listen("onSelect = #catalogsListBox")

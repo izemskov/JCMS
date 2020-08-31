@@ -13,6 +13,10 @@ import ru.develgame.jcms.entities.Content;
 import ru.develgame.jcms.repositories.CatalogRepository;
 import ru.develgame.jcms.repositories.ContentRepository;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.List;
 
 @Component
@@ -41,5 +45,37 @@ public class CommonFunctions {
                 addRecursCatalogsToDataModel(res, elem, exclude);
             }
         }
+    }
+
+    public BufferedImage createResizedCopy(BufferedImage originalImage, int newWidth, int newHeight) throws Exception {
+        if (newWidth == 0 && newHeight == 0) {
+            newWidth = originalImage.getWidth();
+            newHeight = originalImage.getHeight();
+        }
+        else if (newWidth != 0 && newHeight != 0) {
+            throw new Exception("Crop not supported. One of newWidth or newHeight must be a zero");
+        }
+        else {
+            if (newWidth == 0)
+                newWidth = originalImage.getWidth() * (newHeight * 100 / originalImage.getHeight()) / 100;
+
+            if (newHeight == 0)
+                newHeight = originalImage.getHeight() * (newWidth * 100 / originalImage.getWidth()) / 100;
+        }
+
+        int type = (originalImage.getTransparency() == Transparency.OPAQUE) ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
+
+        BufferedImage bufferedImage = new BufferedImage(newWidth, newHeight, type);
+        Graphics2D g = bufferedImage.createGraphics();
+        g.drawImage(originalImage, 0, 0, newWidth, newHeight, null);
+        g.dispose();
+
+        if (originalImage.getTransparency() == Transparency.OPAQUE)
+            g.setComposite(AlphaComposite.Src);
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        return bufferedImage;
     }
 }
