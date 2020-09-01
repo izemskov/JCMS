@@ -4,6 +4,8 @@
     <div id="main_view" height="100%" width="100%" apply="ru.develgame.jcms.composers.admin.CatalogsComposer">
         <include src="~./admin/widgets/mainmenu.zul"/>
 
+        <div id="navBar" style="margin-bottom: 20px; margin-top: 10px; padding-left: 30px;" />
+
         <div align="right" style="margin-bottom: 10px;">
             <button id="createCatalogButton" label="${labels.catalogs.button.label.createCatalog}"/>
         </div>

@@ -15,10 +15,8 @@ import ru.develgame.jcms.repositories.CatalogRepository;
 import ru.develgame.jcms.repositories.ContentRepository;
 
 import javax.annotation.PostConstruct;
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.List;
 
 @Component

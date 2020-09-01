@@ -6,6 +6,8 @@
 
 package ru.develgame.jcms.composers.admin;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,11 +42,13 @@ public class ContentsComposer extends SelectorComposer {
     @Wire private Grid contentsGrid;
     @Wire private Button removeContentButton;
 
-    @WireVariable private PlatformTransactionManager transactionManager;
-
     private ListModel<Content> contentsDataModel = null;
 
+    @WireVariable private PlatformTransactionManager transactionManager;
+
     private TransactionTemplate transactionTemplate = null;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private void refreshContentsDataModel() {
         List<Content> res = new ArrayList<>();
@@ -102,27 +106,31 @@ public class ContentsComposer extends SelectorComposer {
     @Transactional
     public void removeContentButtonOnClick() {
         RowRenderer<Content> rowRenderer = contentsGrid.getRowRenderer();
-        List<Content> delTemplatesList = ((ContentsRowRender) rowRenderer).getDelContentsList();
+        List<Content> delContentsList = ((ContentsRowRender) rowRenderer).getDelContentsList();
 
-        Integer status = getTransactionTemplate().execute(transactionStatus -> {
-            try {
-                contentRepository.deleteAll(delTemplatesList);
+        int status = 0;
+        try {
+            getTransactionTemplate().execute(transactionStatus -> {
+                contentRepository.deleteAll(delContentsList);
                 return 0;
-            }
-            catch (Exception ex) {
-                return 1;
-            }
-        });
+            });
+        }
+        catch (Exception ex) {
+            logger.error("", ex);
+            status = 1;
+        }
+
+        refreshContentsDataModel();
+        contentsGrid.setModel(contentsDataModel);
+
+        delContentsList.clear();
+
+        removeContentButton.setDisabled(true);
 
         if (status != 0) {
             Messagebox.show(Labels.getLabel("content.error.cannotRemove"),
                     null, 0,  Messagebox.ERROR);
             return;
         }
-
-        refreshContentsDataModel();
-        contentsGrid.setModel(contentsDataModel);
-
-        removeContentButton.setDisabled(true);
     }
 }

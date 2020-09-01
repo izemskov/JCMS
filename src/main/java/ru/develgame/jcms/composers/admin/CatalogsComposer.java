@@ -6,6 +6,12 @@
 
 package ru.develgame.jcms.composers.admin;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
+import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Execution;
 import org.zkoss.zk.ui.Executions;
@@ -18,16 +24,17 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.*;
+import ru.develgame.jcms.CommonFunctions;
 import ru.develgame.jcms.entities.Catalog;
 import ru.develgame.jcms.entities.CatalogItem;
+import ru.develgame.jcms.renders.CatalogItemsRowRender;
 import ru.develgame.jcms.repositories.CatalogItemRepository;
 import ru.develgame.jcms.repositories.CatalogRepository;
+import ru.develgame.jcms.repositories.SecurityUserRepository;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.io.File;
+import java.util.*;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class CatalogsComposer extends SelectorComposer {
@@ -35,14 +42,30 @@ public class CatalogsComposer extends SelectorComposer {
     @Wire private Grid catalogsGrid;
     @Wire private Button removeCatalogItemButton;
     @Wire private Grid catalogItemsGrid;
+    @Wire private Div navBar;
 
     @WireVariable private CatalogRepository catalogRepository;
     @WireVariable private CatalogItemRepository catalogItemRepository;
+    @WireVariable private CommonFunctions commonFunctions;
+    @WireVariable private SecurityUserRepository securityUserRepository;
 
     private ListModel<Catalog> catalogsDataModel = null;
     private ListModel<CatalogItem> catalogItemsDataModel = null;
 
     private Catalog parentCatalog = null;
+
+    @WireVariable private PlatformTransactionManager transactionManager;
+
+    private TransactionTemplate transactionTemplate = null;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    public TransactionTemplate getTransactionTemplate() {
+        if (transactionTemplate == null)
+            transactionTemplate = new TransactionTemplate(transactionManager);
+
+        return transactionTemplate;
+    }
 
     public Catalog getParentCatalog() {
         if (parentCatalog == null) {
@@ -125,6 +148,27 @@ public class CatalogsComposer extends SelectorComposer {
             else
                 removeCatalogItemButton.setDisabled(true);
         });
+
+        A buildsA = new A(Labels.getLabel("catalog.title"));
+        buildsA.setHref("/admin/catalogs");
+        navBar.appendChild(buildsA);
+
+        if (parentCatalog != null) {
+            List<Catalog> navBarCatalogs = new ArrayList<>();
+            Catalog currentCatalog = parentCatalog;
+            while (currentCatalog != null) {
+                navBarCatalogs.add(currentCatalog);
+                currentCatalog = currentCatalog.getParentCatalog();
+            }
+            Collections.reverse(navBarCatalogs);
+
+            navBarCatalogs.forEach(e -> {
+                A buildA = new A(e.getName());
+                buildA.setHref("/admin/catalogs?catalogId=" + e.getId());
+                navBar.appendChild(new Label(" > "));
+                navBar.appendChild(buildA);
+            });
+        }
     }
 
     @Listen("onClick = #createCatalogButton")
@@ -149,5 +193,63 @@ public class CatalogsComposer extends SelectorComposer {
         Window window = (Window) Executions.createComponents(
                 "~./admin/widgets/addEditCatalogItem.zul", null, args);
         window.doModal();
+    }
+
+    @Listen("onClick = #removeCatalogItemButton")
+    @Transactional
+    public void removeCatalogItemButtonOnClick() {
+        RowRenderer<CatalogItem> rowRenderer = catalogItemsGrid.getRowRenderer();
+        List<CatalogItem> delCatalogItemsList = ((CatalogItemsRowRender) rowRenderer).getDelCatalogItemsList();
+
+        int status = 0;
+        try {
+            getTransactionTemplate().execute(transactionStatus -> {
+                List<String> files = new ArrayList<>();
+                for (CatalogItem elem : delCatalogItemsList) {
+                    if (elem.getPhoto() != null && !elem.getPhoto().isEmpty())
+                        files.add(elem.getPhoto());
+                }
+
+                for (CatalogItem elem : delCatalogItemsList) {
+                    List<Catalog> catalogs = new ArrayList<>(elem.getCatalogs());
+                    for (Catalog catalog : catalogs) {
+                        catalog.removeCatalogItem(elem);
+                        catalogRepository.save(catalog);
+                    }
+
+                    catalogItemRepository.delete(elem);
+                }
+
+                files.forEach(e -> {
+                    File file = new File(commonFunctions.getCatalogItemSavePath(), e);
+                    File fileSmall = new File(commonFunctions.getCatalogItemSavePathSmall(), e);
+                    File fileBig = new File(commonFunctions.getCatalogItemSavePathBig(), e);
+
+                    file.delete();
+                    fileSmall.delete();
+                    fileBig.delete();
+                });
+
+                return 0;
+            });
+
+        }
+        catch (Exception ex) {
+            status = 1;
+            logger.error("", ex);
+        }
+
+        refreshCatalogItemsDataModel(parentCatalog);
+        catalogItemsGrid.setModel(catalogItemsDataModel);
+
+        delCatalogItemsList.clear();
+
+        removeCatalogItemButton.setDisabled(true);
+
+        if (status != 0) {
+            Messagebox.show(Labels.getLabel("catalogs.error.cannotRemoveCatalogItems"),
+                    null, 0,  Messagebox.ERROR);
+            return;
+        }
     }
 }
