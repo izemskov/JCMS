@@ -25,10 +25,10 @@ public class Catalog {
     @JoinColumn(name = "parent_id")
     private Catalog parentCatalog;
 
-    @OneToMany(mappedBy = "parentCatalog")
+    @OneToMany(mappedBy = "parentCatalog", cascade = CascadeType.REMOVE)
     private Set<Catalog> childrenCatalogs;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<CatalogItem> catalogItems = new ArrayList<>();
 
     private int orderCatalog;

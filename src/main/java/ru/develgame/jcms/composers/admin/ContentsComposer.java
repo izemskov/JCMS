@@ -103,7 +103,6 @@ public class ContentsComposer extends SelectorComposer {
     }
 
     @Listen("onClick = #removeContentButton")
-    @Transactional
     public void removeContentButtonOnClick() {
         RowRenderer<Content> rowRenderer = contentsGrid.getRowRenderer();
         List<Content> delContentsList = ((ContentsRowRender) rowRenderer).getDelContentsList();

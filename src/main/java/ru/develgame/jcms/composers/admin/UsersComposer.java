@@ -79,7 +79,6 @@ public class UsersComposer extends SelectorComposer {
     }
 
     @Listen("onClick = #removeUserButton")
-    @Transactional
     public void removeUserButtonOnClick() {
         RowRenderer<SecurityUser> rowRenderer = usersGrid.getRowRenderer();
         List<SecurityUser> delTemplatesList = ((UsersRowRender) rowRenderer).getDelUsersList();

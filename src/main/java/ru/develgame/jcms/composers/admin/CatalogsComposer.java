@@ -28,6 +28,7 @@ import ru.develgame.jcms.CommonFunctions;
 import ru.develgame.jcms.entities.Catalog;
 import ru.develgame.jcms.entities.CatalogItem;
 import ru.develgame.jcms.renders.CatalogItemsRowRender;
+import ru.develgame.jcms.renders.CatalogsRowRender;
 import ru.develgame.jcms.repositories.CatalogItemRepository;
 import ru.develgame.jcms.repositories.CatalogRepository;
 import ru.develgame.jcms.repositories.SecurityUserRepository;
@@ -196,7 +197,6 @@ public class CatalogsComposer extends SelectorComposer {
     }
 
     @Listen("onClick = #removeCatalogItemButton")
-    @Transactional
     public void removeCatalogItemButtonOnClick() {
         RowRenderer<CatalogItem> rowRenderer = catalogItemsGrid.getRowRenderer();
         List<CatalogItem> delCatalogItemsList = ((CatalogItemsRowRender) rowRenderer).getDelCatalogItemsList();
@@ -251,5 +251,70 @@ public class CatalogsComposer extends SelectorComposer {
                     null, 0,  Messagebox.ERROR);
             return;
         }
+    }
+
+    private void recursRemoveCatalogItems(Catalog parent, List<String> files) {
+        List<CatalogItem> catalogItems = new ArrayList<>(parent.getCatalogItems());
+        for (CatalogItem item : catalogItems) {
+            item.removeCatalog(parent);
+            catalogRepository.save(parent);
+
+            if (item.getCatalogs().isEmpty()) {
+                if (item.getPhoto() != null && !item.getPhoto().isEmpty())
+                    files.add(item.getPhoto());
+                catalogItemRepository.delete(item);
+            }
+        }
+
+        for (Catalog elem : parent.getChildrenCatalogs()) {
+            recursRemoveCatalogItems(elem, files);
+        }
+    }
+
+    @Listen("onClick = #removeCatalogButton")
+    public void removeCatalogButtonOnClick() {
+        RowRenderer<Catalog> rowRenderer = catalogsGrid.getRowRenderer();
+        List<Catalog> delCatalogList = ((CatalogsRowRender) rowRenderer).getDelCatalogsList();
+
+        int status = 0;
+        try {
+            getTransactionTemplate().execute(transactionStatus -> {
+                List<String> files = new ArrayList<>();
+                List<Catalog> catalogsForDelete = new ArrayList<>();
+                for (Catalog elem : delCatalogList) {
+                    Optional<Catalog> byId = catalogRepository.findById(elem.getId());
+                    if (byId.isPresent()) {
+                        catalogsForDelete.add(byId.get());
+                    }
+                }
+
+                for (Catalog elem : catalogsForDelete) {
+                    recursRemoveCatalogItems(elem, files);
+                }
+
+                for (Catalog elem : catalogsForDelete) {
+                    catalogRepository.delete(elem);
+                }
+
+                files.forEach(e -> {
+                    File file = new File(commonFunctions.getCatalogItemSavePath(), e);
+                    File fileSmall = new File(commonFunctions.getCatalogItemSavePathSmall(), e);
+                    File fileBig = new File(commonFunctions.getCatalogItemSavePathBig(), e);
+
+                    file.delete();
+                    fileSmall.delete();
+                    fileBig.delete();
+                });
+
+                return 0;
+            });
+
+        }
+        catch (Exception ex) {
+            status = 1;
+            logger.error("", ex);
+        }
+
+
     }
 }

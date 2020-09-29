@@ -23,7 +23,7 @@ public class CatalogItem {
 
     private String photo;
 
-    @ManyToMany(mappedBy = "catalogItems", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "catalogItems", fetch = FetchType.EAGER)
     private List<Catalog> catalogs = new ArrayList<>();
 
     @Lob
