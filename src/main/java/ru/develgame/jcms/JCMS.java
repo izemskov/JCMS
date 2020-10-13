@@ -6,12 +6,34 @@
 
 package ru.develgame.jcms;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.Resource;
+import ru.develgame.jcms.common.StorageService;
 
 @SpringBootApplication
+@EnableCaching
 public class JCMS {
+    private static ConfigurableApplicationContext context;
+
+    @Value("${catalogItemSavePath}")
+    private String catalogItemSavePath;
+
+    @Bean
+    public StorageService storageService() {
+        return new StorageService() {
+            @Override
+            public Resource loadAsResource(String path) {
+                return context.getResource("file:" + catalogItemSavePath + path);
+            }
+        };
+    }
+
     public static void main(String[] args) {
-        SpringApplication.run(JCMS.class, args);
+        context = SpringApplication.run(JCMS.class, args);
     }
 }

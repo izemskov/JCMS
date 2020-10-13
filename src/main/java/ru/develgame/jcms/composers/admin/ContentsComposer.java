@@ -8,9 +8,7 @@ package ru.develgame.jcms.composers.admin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Sort;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
@@ -24,7 +22,7 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.*;
-import ru.develgame.jcms.CommonFunctions;
+import ru.develgame.jcms.common.CommonFunctions;
 import ru.develgame.jcms.entities.Content;
 import ru.develgame.jcms.renders.ContentsRowRender;
 import ru.develgame.jcms.repositories.ContentRepository;

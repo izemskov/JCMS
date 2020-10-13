@@ -26,7 +26,9 @@ public class CatalogItem {
     @ManyToMany(mappedBy = "catalogItems", fetch = FetchType.EAGER)
     private List<Catalog> catalogs = new ArrayList<>();
 
-    @Lob
+    private String smallDescription;
+
+    @Column(columnDefinition="TEXT")
     private String description;
 
     private int orderCatalogItem;
@@ -122,6 +124,14 @@ public class CatalogItem {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getSmallDescription() {
+        return smallDescription;
+    }
+
+    public void setSmallDescription(String smallDescription) {
+        this.smallDescription = smallDescription;
     }
 
     /* Overrided */

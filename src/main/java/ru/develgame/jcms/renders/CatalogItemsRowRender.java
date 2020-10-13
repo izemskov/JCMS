@@ -13,7 +13,7 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventQueue;
 import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zul.*;
-import ru.develgame.jcms.CommonFunctions;
+import ru.develgame.jcms.common.CommonFunctions;
 import ru.develgame.jcms.entities.CatalogItem;
 
 import javax.imageio.ImageIO;

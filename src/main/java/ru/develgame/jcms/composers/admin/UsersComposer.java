@@ -6,7 +6,6 @@
 
 package ru.develgame.jcms.composers.admin;
 
-import org.springframework.transaction.annotation.Transactional;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -18,7 +17,7 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.*;
-import ru.develgame.jcms.CommonFunctions;
+import ru.develgame.jcms.common.CommonFunctions;
 import ru.develgame.jcms.entities.SecurityUser;
 import ru.develgame.jcms.renders.UsersRowRender;
 import ru.develgame.jcms.repositories.SecurityUserRepository;

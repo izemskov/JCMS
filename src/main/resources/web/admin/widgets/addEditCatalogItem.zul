@@ -35,6 +35,16 @@
                 </row>
 
                 <row>
+                    <label value="${labels.addEditCatalogItem.label.smallDescription}"/>
+                    <textbox id="smallDescription" multiline="true" rows="5" cols="43"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditCatalogItem.label.description}"/>
+                    <textbox id="description" multiline="true" rows="5" cols="43"/>
+                </row>
+
+                <row>
                     <label value="${labels.addEditCatalogItem.label.order}"/>
                     <textbox id="orderTextBox" value="" width="100%"/>
                 </row>

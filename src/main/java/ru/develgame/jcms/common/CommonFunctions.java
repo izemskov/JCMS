@@ -4,7 +4,7 @@
  *
  * Copyright 2020 Ilya Zemskov */
 
-package ru.develgame.jcms;
+package ru.develgame.jcms.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

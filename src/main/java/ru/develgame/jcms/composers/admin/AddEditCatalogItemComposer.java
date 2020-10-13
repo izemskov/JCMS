@@ -6,10 +6,8 @@
 
 package ru.develgame.jcms.composers.admin;
 
-import org.hibernate.id.GUIDGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.zkoss.util.media.Media;
@@ -23,7 +21,7 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.*;
-import ru.develgame.jcms.CommonFunctions;
+import ru.develgame.jcms.common.CommonFunctions;
 import ru.develgame.jcms.entities.Catalog;
 import ru.develgame.jcms.entities.CatalogItem;
 import ru.develgame.jcms.repositories.CatalogItemRepository;
@@ -32,7 +30,6 @@ import ru.develgame.jcms.repositories.CatalogRepository;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -42,6 +39,8 @@ public class AddEditCatalogItemComposer extends SelectorComposer {
     @Wire private Textbox linkTextBox;
     @Wire private Listbox catalogsListBox;
     @Wire private Bandbox catalogsBandBox;
+    @Wire private Textbox smallDescription;
+    @Wire private Textbox description;
     @Wire private Textbox orderTextBox;
     @Wire private Textbox metaTitleTextBox;
     @Wire private Textbox metaDescriptionTextBox;
@@ -111,6 +110,8 @@ public class AddEditCatalogItemComposer extends SelectorComposer {
                     catalogsListBox.renderAll();
                     fillCatalogsBandBox();
                 }
+                smallDescription.setText(catalogItem.getSmallDescription());
+                description.setText(catalogItem.getDescription());
                 orderTextBox.setText(Integer.toString(catalogItem.getOrderCatalogItem()));
                 metaTitleTextBox.setText(catalogItem.getMetaTitle());
                 metaDescriptionTextBox.setText(catalogItem.getMetaDescription());
@@ -304,6 +305,8 @@ public class AddEditCatalogItemComposer extends SelectorComposer {
                     catalogItem = new CatalogItem();
                 catalogItem.setName(nameTextBox.getText());
                 catalogItem.setLink(linkTextBox.getText());
+                catalogItem.setSmallDescription(smallDescription.getText());
+                catalogItem.setDescription(description.getText());
                 catalogItem.setOrderCatalogItem(Integer.parseInt(orderTextBox.getText()));
                 catalogItem.setMetaTitle(metaTitleTextBox.getText());
                 catalogItem.setMetaDescription(metaDescriptionTextBox.getText());

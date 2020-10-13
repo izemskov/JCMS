@@ -23,7 +23,7 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.*;
-import ru.develgame.jcms.CommonFunctions;
+import ru.develgame.jcms.common.CommonFunctions;
 import ru.develgame.jcms.entities.Catalog;
 import ru.develgame.jcms.repositories.CatalogRepository;
 
