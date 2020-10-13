@@ -1,2 +1,2 @@
 # JCMS
-Simple Content Management System on Java (Spring Boot, Spring Data, ZK)
+Simple Content Management System on Java (Spring Boot, Spring Data, Spring MVC, Thymeleaf, ZK)
