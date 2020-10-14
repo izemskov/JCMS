@@ -4,7 +4,7 @@
  *
  * Copyright 2020 Ilya Zemskov */
 
-package ru.develgame.jcms.composers.admin;
+package ru.develgame.jcms.admin.composers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +26,8 @@ import org.zkoss.zul.*;
 import ru.develgame.jcms.common.CommonFunctions;
 import ru.develgame.jcms.entities.Catalog;
 import ru.develgame.jcms.entities.CatalogItem;
-import ru.develgame.jcms.renders.CatalogItemsRowRender;
-import ru.develgame.jcms.renders.CatalogsRowRender;
+import ru.develgame.jcms.admin.renders.CatalogItemsRowRender;
+import ru.develgame.jcms.admin.renders.CatalogsRowRender;
 import ru.develgame.jcms.repositories.CatalogItemRepository;
 import ru.develgame.jcms.repositories.CatalogRepository;
 import ru.develgame.jcms.repositories.SecurityUserRepository;

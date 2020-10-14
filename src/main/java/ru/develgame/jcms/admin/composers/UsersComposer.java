@@ -4,7 +4,7 @@
  *
  * Copyright 2020 Ilya Zemskov */
 
-package ru.develgame.jcms.composers.admin;
+package ru.develgame.jcms.admin.composers;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -19,7 +19,7 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.*;
 import ru.develgame.jcms.common.CommonFunctions;
 import ru.develgame.jcms.entities.SecurityUser;
-import ru.develgame.jcms.renders.UsersRowRender;
+import ru.develgame.jcms.admin.renders.UsersRowRender;
 import ru.develgame.jcms.repositories.SecurityUserRepository;
 
 import java.util.HashMap;

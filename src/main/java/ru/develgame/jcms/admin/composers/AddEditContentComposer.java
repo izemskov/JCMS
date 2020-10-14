@@ -4,7 +4,7 @@
  *
  * Copyright 2020 Ilya Zemskov */
 
-package ru.develgame.jcms.composers.admin;
+package ru.develgame.jcms.admin.composers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +26,7 @@ import org.zkoss.zul.*;
 import ru.develgame.jcms.common.CommonFunctions;
 import ru.develgame.jcms.entities.Content;
 import ru.develgame.jcms.repositories.ContentRepository;
+import ru.develgame.jcms.services.ContentService;
 
 import java.util.*;
 
@@ -45,6 +46,7 @@ public class AddEditContentComposer extends SelectorComposer {
     @WireVariable private ContentRepository contentRepository;
     @WireVariable private PlatformTransactionManager transactionManager;
     @WireVariable private CommonFunctions commonFunctions;
+    @WireVariable private ContentService contentService;
 
     private TransactionTemplate transactionTemplate = null;
 
@@ -157,7 +159,6 @@ public class AddEditContentComposer extends SelectorComposer {
 
         Set<Content> selection = parentModel.getSelection();
 
-        // create build
         Integer status = getTransactionTemplate().execute(s -> {
             try {
                 if (content == null)
@@ -165,6 +166,7 @@ public class AddEditContentComposer extends SelectorComposer {
                 content.setName(nameTextBox.getText());
                 content.setFullName(fullNameTextBox.getText());
                 content.setLink(linkTextBox.getText());
+                content.setContent(contentTextBox.getText());
 
                 if (!selection.isEmpty()) {
                     Content parentContent = selection.iterator().next();
@@ -179,7 +181,7 @@ public class AddEditContentComposer extends SelectorComposer {
                 content.setMetaDescription(metaDescriptionTextBox.getText());
                 content.setMetaKeyword(metaKeywordsTextBox.getText());
 
-                contentRepository.save(content);
+                contentService.saveContent(content);
 
                 return 0;
             }

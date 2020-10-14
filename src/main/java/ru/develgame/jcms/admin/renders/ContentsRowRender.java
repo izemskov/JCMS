@@ -4,7 +4,7 @@
  *
  * Copyright 2020 Ilya Zemskov */
 
-package ru.develgame.jcms.renders;
+package ru.develgame.jcms.admin.renders;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Executions;

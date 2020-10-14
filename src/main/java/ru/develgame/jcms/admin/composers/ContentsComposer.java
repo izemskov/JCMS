@@ -4,7 +4,7 @@
  *
  * Copyright 2020 Ilya Zemskov */
 
-package ru.develgame.jcms.composers.admin;
+package ru.develgame.jcms.admin.composers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +24,9 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.*;
 import ru.develgame.jcms.common.CommonFunctions;
 import ru.develgame.jcms.entities.Content;
-import ru.develgame.jcms.renders.ContentsRowRender;
+import ru.develgame.jcms.admin.renders.ContentsRowRender;
 import ru.develgame.jcms.repositories.ContentRepository;
+import ru.develgame.jcms.services.ContentService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ import java.util.Map;
 public class ContentsComposer extends SelectorComposer {
     @WireVariable private ContentRepository contentRepository;
     @WireVariable private CommonFunctions commonFunctions;
+    @WireVariable private ContentService contentService;
 
     @Wire private Grid contentsGrid;
     @Wire private Button removeContentButton;
@@ -108,7 +110,7 @@ public class ContentsComposer extends SelectorComposer {
         int status = 0;
         try {
             getTransactionTemplate().execute(transactionStatus -> {
-                contentRepository.deleteAll(delContentsList);
+                contentService.deleteContents(delContentsList);
                 return 0;
             });
         }

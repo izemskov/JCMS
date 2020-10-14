@@ -1,0 +1,28 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<html lang="en">
+<head th:include="fragments/header :: headerFragment"></head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" th:include="fragments/header :: navbarFragment"></nav>
+
+<main role="main">
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-3">Something went wrong!</h1>
+            <p>Our Engineers are on it</p>
+            <p><a class="btn btn-primary btn-lg" href="/" role="button">Go home</a></p>
+        </div>
+    </div>
+
+</main>
+
+<footer class="container">
+    <p>&copy; Company 2017-2020</p>
+</footer>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

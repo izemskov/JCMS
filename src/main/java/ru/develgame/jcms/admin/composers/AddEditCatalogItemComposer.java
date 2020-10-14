@@ -4,7 +4,7 @@
  *
  * Copyright 2020 Ilya Zemskov */
 
-package ru.develgame.jcms.composers.admin;
+package ru.develgame.jcms.admin.composers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

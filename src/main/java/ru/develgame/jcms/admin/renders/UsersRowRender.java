@@ -4,7 +4,7 @@
  *
  * Copyright 2020 Ilya Zemskov */
 
-package ru.develgame.jcms.renders;
+package ru.develgame.jcms.admin.renders;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Executions;
@@ -13,31 +13,27 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventQueue;
 import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zul.*;
-import ru.develgame.jcms.entities.Catalog;
+import ru.develgame.jcms.entities.SecurityUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CatalogsRowRender implements RowRenderer<Catalog> {
-    private List<Catalog> delCatalogsList = new ArrayList<>();
+public class UsersRowRender implements RowRenderer<SecurityUser> {
+    private List<SecurityUser> delUsersList = new ArrayList<>();
 
     @Override
-    public void render(Row row, Catalog catalog, int i) throws Exception {
-        A a = new A(catalog.getName());
-        a.setHref("/admin/catalogs?catalogId=" + catalog.getId());
-        row.appendChild(a);
+    public void render(Row row, SecurityUser securityUser, int i) throws Exception {
+        row.appendChild(new Label(securityUser.getName()));
 
-        row.appendChild(new Label(catalog.getLink()));
-
-        Button buttonEdit = new Button(Labels.getLabel("catalogs.table.column.edit"));
+        Button buttonEdit = new Button(Labels.getLabel("users.table.column.edit"));
         buttonEdit.addEventListener("onClick", t -> {
             Map<String, String> args = new HashMap<>();
-            args.put("catalogId", Long.toString(catalog.getId()));
+            args.put("userId", Long.toString(securityUser.getId()));
 
             Window window = (Window) Executions.createComponents(
-                    "~./admin/widgets/addEditCatalog.zul", null, args);
+                    "~./admin/widgets/addEditUser.zul", null, args);
             window.doModal();
         });
         Cell cell = new Cell();
@@ -48,17 +44,17 @@ public class CatalogsRowRender implements RowRenderer<Catalog> {
         Checkbox checkbox = new Checkbox();
         checkbox.addEventListener("onCheck", t -> {
             if (((CheckEvent) t).isChecked()) {
-                delCatalogsList.add(catalog);
+                delUsersList.add(securityUser);
             }
             else {
-                delCatalogsList.remove(catalog);
+                delUsersList.remove(securityUser);
             }
 
-            EventQueue<Event> eq = EventQueues.lookup("delCatalogs", EventQueues.DESKTOP, true);
-            if (delCatalogsList.isEmpty())
-                eq.publish(new org.zkoss.zk.ui.event.Event("checkBoxDelCatalogs", null, "disable"));
+            EventQueue<Event> eq = EventQueues.lookup("delUsers", EventQueues.DESKTOP, true);
+            if (delUsersList.isEmpty())
+                eq.publish(new org.zkoss.zk.ui.event.Event("checkBoxDelCatalogItems", null, "disable"));
             else
-                eq.publish(new org.zkoss.zk.ui.event.Event("checkBoxDelCatalogs", null, "enable"));
+                eq.publish(new org.zkoss.zk.ui.event.Event("checkBoxDelCatalogItems", null, "enable"));
         });
 
         cell = new Cell();
@@ -67,7 +63,7 @@ public class CatalogsRowRender implements RowRenderer<Catalog> {
         row.appendChild(cell);
     }
 
-    public List<Catalog> getDelCatalogsList() {
-        return delCatalogsList;
+    public List<SecurityUser> getDelUsersList() {
+        return delUsersList;
     }
 }
