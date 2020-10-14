@@ -33,22 +33,25 @@ public class ContentController {
 
     @RequestMapping(value = "/id/{id}")
     public String getContent(@PathVariable Long id, Model model) {
+        mainMenuService.addMainMenuToModel(model);
+
         Content contentById = contentService.getContentById(id);
         if (contentById == null)
             return "notFound";
 
-        mainMenuService.addMainMenuToModel(model);
         model.addAttribute("content", contentById);
         return "content";
     }
 
     @RequestMapping(value = "{link}")
     public String getContent(@PathVariable String link, Model model) {
-        Content contentById = contentService.getContentByLink(link);
-        if (contentById == null)
-            return "notFound";
-
         mainMenuService.addMainMenuToModel(model);
+
+        Content contentById = contentService.getContentByLink(link);
+        if (contentById == null) {
+            return "notFound";
+        }
+
         model.addAttribute("content", contentById);
         return "content";
     }

@@ -59,6 +59,12 @@
             <version>42.2.5</version>
         </dependency>
 
+        <!-- Cache -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+
         <!-- Email Sender -->
         <dependency>
             <groupId>javax.mail</groupId>

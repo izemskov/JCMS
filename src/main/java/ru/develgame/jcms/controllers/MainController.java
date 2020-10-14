@@ -27,11 +27,12 @@ public class MainController {
 
     @RequestMapping("/")
     public String index(Model model) {
+        mainMenuService.addMainMenuToModel(model);
+
         Pageable limit = PageRequest.of(0,3);
         Page<CatalogItem> all = catalogItemRepository.findAll(limit);
         model.addAttribute("contentItems", all.getContent());
 
-        mainMenuService.addMainMenuToModel(model);
 
         return "index";
     }

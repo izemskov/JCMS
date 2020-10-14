@@ -14,6 +14,8 @@
 package ru.develgame.jcms.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.develgame.jcms.entities.Content;
 import ru.develgame.jcms.repositories.ContentRepository;
@@ -27,6 +29,7 @@ public class ContentService {
     @Autowired
     private ContentRepository contentRepository;
 
+    @Cacheable(value = "contentByParent")
     public List<Content> getContentsByParent(Content parent) {
         List<Content> res = new ArrayList<>();
         List<Content> contents = contentRepository.findByParentContentOrderByOrderContent(parent);
@@ -36,6 +39,7 @@ public class ContentService {
         return res;
     }
 
+    @Cacheable(value = "contentByIdLink")
     public Content getContentById(Long id) {
         Optional<Content> content = contentRepository.findById(id);
         if (content.isPresent())
@@ -43,6 +47,7 @@ public class ContentService {
         return null;
     }
 
+    @Cacheable(value = "contentByIdLink")
     public Content getContentByLink(String link) {
         Optional<Content> content = contentRepository.findByLink(link);
         if (content.isPresent())
@@ -50,10 +55,12 @@ public class ContentService {
         return null;
     }
 
+    @CacheEvict(value = {"contentByParent", "contentByIdLink"}, allEntries = true)
     public void saveContent(Content content) {
         contentRepository.save(content);
     }
 
+    @CacheEvict(value = {"contentByParent", "contentByIdLink"}, allEntries = true)
     public void deleteContents(List<Content> delContentsList) {
         contentRepository.deleteAll(delContentsList);
     }

@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ru.develgame.jcms.common.StorageService;
 import ru.develgame.jcms.entities.CatalogItem;
 import ru.develgame.jcms.repositories.CatalogItemRepository;
+import ru.develgame.jcms.services.MainMenuService;
 
 import java.util.Optional;
 
@@ -39,8 +40,13 @@ public class CatalogController {
     @Autowired
     private StorageService storageService;
 
+    @Autowired
+    private MainMenuService mainMenuService;
+
     @RequestMapping(value = "/item/{id}")
     public String catalogItem(@PathVariable Long id, Model model) {
+        mainMenuService.addMainMenuToModel(model);
+
         Optional<CatalogItem> byId = catalogItemRepository.findById(id);
 
         if (!byId.isPresent())
