@@ -1,13 +1,13 @@
 <zk>
     <?page title="${labels.contents.title}"?>
 
-    <div id="main_view" height="100%" width="100%" apply="ru.develgame.jcms.composers.admin.ContentsComposer">
+    <div id="main_view" height="100%" width="100%" apply="ru.develgame.jcms.admin.composers.ContentsComposer">
         <include src="~./admin/widgets/mainmenu.zul"/>
 
         <div align="right" style="margin-bottom: 10px;">
             <button id="createContentButton" label="${labels.contents.button.label.createContent}"/>
         </div>
-        <grid id="contentsGrid" model="${$composer.contentsDataModel}" rowRenderer="ru.develgame.jcms.renders.ContentsRowRender">
+        <grid id="contentsGrid" model="${$composer.contentsDataModel}" rowRenderer="ru.develgame.jcms.admin.renders.ContentsRowRender">
             <columns sizable="true">
                 <column label="${labels.contents.table.column.name}" width="100%"/>
                 <column label="${labels.contents.table.column.link}" width="250px"/>

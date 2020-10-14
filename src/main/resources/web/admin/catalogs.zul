@@ -1,7 +1,7 @@
 <zk>
     <?page title="${labels.catalog.title}"?>
 
-    <div id="main_view" height="100%" width="100%" apply="ru.develgame.jcms.composers.admin.CatalogsComposer">
+    <div id="main_view" height="100%" width="100%" apply="ru.develgame.jcms.admin.composers.CatalogsComposer">
         <include src="~./admin/widgets/mainmenu.zul"/>
 
         <div id="navBar" style="margin-bottom: 20px; margin-top: 10px; padding-left: 30px;" />
@@ -9,7 +9,7 @@
         <div align="right" style="margin-bottom: 10px;">
             <button id="createCatalogButton" label="${labels.catalogs.button.label.createCatalog}"/>
         </div>
-        <grid id="catalogsGrid" model="${$composer.catalogsDataModel}" rowRenderer="ru.develgame.jcms.renders.CatalogsRowRender">
+        <grid id="catalogsGrid" model="${$composer.catalogsDataModel}" rowRenderer="ru.develgame.jcms.admin.renders.CatalogsRowRender">
             <columns sizable="true">
                 <column label="${labels.catalogs.table.column.name}" width="100%"/>
                 <column label="${labels.catalogs.table.column.link}" width="250px"/>
@@ -26,7 +26,7 @@
         <div align="right" style="margin-bottom: 10px; margin-top: 20px;">
             <button id="createCatalogItemButton" label="${labels.catalogs.button.label.createCatalogItem}"/>
         </div>
-        <grid id="catalogItemsGrid" model="${$composer.catalogItemsDataModel}" rowRenderer="ru.develgame.jcms.renders.CatalogItemsRowRender">
+        <grid id="catalogItemsGrid" model="${$composer.catalogItemsDataModel}" rowRenderer="ru.develgame.jcms.admin.renders.CatalogItemsRowRender">
             <columns sizable="true">
                 <column label="${labels.catalogs.table.column.image}" width="200px"/>
                 <column label="${labels.catalogs.table.column.name}" width="100%"/>

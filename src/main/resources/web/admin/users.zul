@@ -1,13 +1,13 @@
 <zk>
     <?page title="${labels.users.title}"?>
 
-    <div id="main_view" height="100%" width="100%" apply="ru.develgame.jcms.composers.admin.UsersComposer">
+    <div id="main_view" height="100%" width="100%" apply="ru.develgame.jcms.admin.composers.UsersComposer">
         <include src="~./admin/widgets/mainmenu.zul"/>
 
         <div align="right" style="margin-bottom: 10px;">
             <button id="createUserButton" label="${labels.users.button.label.createUser}"/>
         </div>
-        <grid id="usersGrid" model="${$composer.usersDataModel}" rowRenderer="ru.develgame.jcms.renders.UsersRowRender">
+        <grid id="usersGrid" model="${$composer.usersDataModel}" rowRenderer="ru.develgame.jcms.admin.renders.UsersRowRender">
             <columns sizable="true">
                 <column label="${labels.users.table.column.name}" width="100%"/>
                 <column label="${labels.users.table.column.edit}" width="150px"/>

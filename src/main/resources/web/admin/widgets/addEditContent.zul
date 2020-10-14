@@ -1,6 +1,6 @@
 <zk>
     <window id="addEditContentForm" title="${labels.addEditContent.title.add}" border="normal" width="900px"
-            apply="ru.develgame.jcms.composers.admin.AddEditContentComposer">
+            apply="ru.develgame.jcms.admin.composers.AddEditContentComposer">
 
         <grid>
             <rows>
@@ -21,7 +21,7 @@
 
                 <row>
                     <label value="${labels.addEditContent.label.parent}"/>
-                    <combobox id="parentComboBox" model="${$composer.parentModel}" itemRenderer="ru.develgame.jcms.renders.ContentsParentComboItemRender" readonly="true"/>
+                    <combobox id="parentComboBox" model="${$composer.parentModel}" itemRenderer="ru.develgame.jcms.admin.renders.ContentsParentComboItemRender" readonly="true"/>
                 </row>
 
                 <row>

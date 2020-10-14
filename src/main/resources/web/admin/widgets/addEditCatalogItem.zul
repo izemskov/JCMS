@@ -1,6 +1,6 @@
 <zk>
     <window id="addEditCatalogItemForm" title="${labels.addEditCatalogItem.title.add}" border="normal" width="900px"
-            apply="ru.develgame.jcms.composers.admin.AddEditCatalogItemComposer">
+            apply="ru.develgame.jcms.admin.composers.AddEditCatalogItemComposer">
 
         <grid>
             <rows>
@@ -20,7 +20,7 @@
                         <bandpopup>
                             <listbox id="catalogsListBox"  width="300px" height="250px" multiple="true"
                                      checkmark="true" model="${$composer.catalogsDataModel}"
-                                     itemRenderer="ru.develgame.jcms.renders.CatalogsListItemRender"/>
+                                     itemRenderer="ru.develgame.jcms.admin.renders.CatalogsListItemRender"/>
                         </bandpopup>
                     </bandbox>
                 </row>

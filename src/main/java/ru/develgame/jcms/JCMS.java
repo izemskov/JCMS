@@ -16,7 +16,6 @@ import org.springframework.core.io.Resource;
 import ru.develgame.jcms.common.StorageService;
 
 @SpringBootApplication
-@EnableCaching
 public class JCMS {
     private static ConfigurableApplicationContext context;
 

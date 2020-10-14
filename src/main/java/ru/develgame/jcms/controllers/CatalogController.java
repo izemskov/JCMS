@@ -31,6 +31,7 @@ import ru.develgame.jcms.repositories.CatalogItemRepository;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("catalog")
 public class CatalogController {
     @Autowired
     private CatalogItemRepository catalogItemRepository;
@@ -38,7 +39,7 @@ public class CatalogController {
     @Autowired
     private StorageService storageService;
 
-    @RequestMapping(value = "/catalog/item/{id}")
+    @RequestMapping(value = "/item/{id}")
     public String catalogItem(@PathVariable Long id, Model model) {
         Optional<CatalogItem> byId = catalogItemRepository.findById(id);
 
@@ -49,10 +50,18 @@ public class CatalogController {
         return "catalogItem";
     }
 
-    @GetMapping("/catalog/images/small/{filename:.+}")
+    @GetMapping("/images/small/{filename:.+}")
     @ResponseBody
-    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+    public ResponseEntity<Resource> getSmallImg(@PathVariable String filename) {
         Resource file = storageService.loadAsResource("/small/" + filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
+
+    @GetMapping("/images/big/{filename:.+}")
+    @ResponseBody
+    public ResponseEntity<Resource> getBigImg(@PathVariable String filename) {
+        Resource file = storageService.loadAsResource("/big/" + filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }

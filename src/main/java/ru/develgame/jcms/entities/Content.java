@@ -27,7 +27,7 @@ public class Content {
     @OneToMany(mappedBy = "parentContent", cascade = CascadeType.REMOVE)
     private Set<Content> childrenContents;
 
-    @Lob
+    @Column(columnDefinition="TEXT")
     private String content;
 
     private int orderContent;
