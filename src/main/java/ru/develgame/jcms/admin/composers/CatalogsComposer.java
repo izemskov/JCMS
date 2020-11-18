@@ -314,6 +314,11 @@ public class CatalogsComposer extends SelectorComposer {
             logger.error("", ex);
         }
 
+        refreshCatalogsDataModel(parentCatalog);
+        catalogsGrid.setModel(catalogsDataModel);
 
+        delCatalogList.clear();
+
+        removeCatalogButton.setDisabled(true);
     }
 }

@@ -1,16 +1,8 @@
-/*
+/* This Source Code Form is subject to the terms of the Mozilla
+ * Public License, v. 2.0. If a copy of the MPL was not distributed
+ * with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * This software is copyright protected (c) 2020 by S-Terra CSP
- *
- * Author:              Ilya Zemskov
- * E-mail:              izemskov@s-terra.com
- *
- * Owner:               Ilya Zemskov
- * E-mail:              izemskov@s-terra.com
- *
- * $Header: $
- *
- */
+ * Copyright 2020 Ilya Zemskov */
 package ru.develgame.jcms.common;
 
 import org.springframework.core.io.Resource;

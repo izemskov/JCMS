@@ -1,0 +1,24 @@
+<zk>
+    <window id="addEditUserForm" title="${labels.addEditUser.title.add}" border="normal" width="900px"
+            apply="ru.develgame.jcms.admin.composers.AddEditUserComposer">
+
+        <grid>
+            <rows>
+                <row>
+                    <label value="${labels.addEditUser.label.name}"/>
+                    <textbox id="nameTextBox" value="" width="100%"/>
+                </row>
+
+                <row>
+                    <label value="${labels.addEditUser.label.password}"/>
+                    <textbox id="passwordTextBox" value="" type="password" width="100%"/>
+                </row>
+            </rows>
+        </grid>
+
+        <hlayout style="text-align: right; margin-top: 10px;">
+            <button id="okButton" label="${labels.addEditUser.button.label.ok}"/>
+            <button id="cancelButton" label="${labels.addEditUser.button.label.cancel}"/>
+        </hlayout>
+    </window>
+</zk>

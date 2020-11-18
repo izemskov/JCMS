@@ -14,8 +14,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.develgame.jcms.entities.CatalogItem;
+import ru.develgame.jcms.entities.Content;
 import ru.develgame.jcms.repositories.CatalogItemRepository;
+import ru.develgame.jcms.repositories.ContentRepository;
 import ru.develgame.jcms.services.MainMenuService;
+
+import java.util.Optional;
 
 @Controller
 public class MainController {
@@ -25,14 +29,22 @@ public class MainController {
     @Autowired
     private MainMenuService mainMenuService;
 
+    @Autowired
+    private ContentRepository contentRepository;
+
     @RequestMapping("/")
     public String index(Model model) {
         mainMenuService.addMainMenuToModel(model);
 
+        Optional<Content> content = contentRepository.findTop1ByParentContentOrderByOrderContent(null);
+        if (!content.isPresent())
+            model.addAttribute("content", new Content());
+        else
+            model.addAttribute("content", content.get());
+
         Pageable limit = PageRequest.of(0,3);
         Page<CatalogItem> all = catalogItemRepository.findAll(limit);
         model.addAttribute("contentItems", all.getContent());
-
 
         return "index";
     }
