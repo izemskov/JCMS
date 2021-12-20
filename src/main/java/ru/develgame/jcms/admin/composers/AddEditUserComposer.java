@@ -103,9 +103,6 @@ public class AddEditUserComposer extends SelectorComposer {
 
         addEditUserForm.detach();
 
-        String exclude = "";
-        List<String> excludeLst = new ArrayList(Arrays.asList(exclude.split("\\s+")).stream().map(t -> t.toLowerCase()).collect(Collectors.toList()));
-
         EventQueue<Event> eq = EventQueues.lookup("addEditUsers", EventQueues.DESKTOP, true);
         eq.publish(new org.zkoss.zk.ui.event.Event("closeAddEditUsers", null, "finished"));
     }

@@ -13,6 +13,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
+import ru.develgame.jcms.common.CommonFunctions;
 import ru.develgame.jcms.common.StorageService;
 
 @SpringBootApplication
@@ -35,5 +36,6 @@ public class JCMS {
 
     public static void main(String[] args) {
         context = SpringApplication.run(JCMS.class, args);
+        context.getBean(CommonFunctions.class).checkCreds();
     }
 }

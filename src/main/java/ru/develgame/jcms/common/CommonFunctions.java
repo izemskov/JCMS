@@ -8,11 +8,15 @@ package ru.develgame.jcms.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.develgame.jcms.entities.Catalog;
 import ru.develgame.jcms.entities.Content;
+import ru.develgame.jcms.entities.SecurityUser;
 import ru.develgame.jcms.repositories.CatalogRepository;
 import ru.develgame.jcms.repositories.ContentRepository;
+import ru.develgame.jcms.repositories.SecurityUserRepository;
 
 import javax.annotation.PostConstruct;
 import java.awt.*;
@@ -26,6 +30,9 @@ public class CommonFunctions {
 
     @Autowired
     private CatalogRepository catalogRepository;
+
+    @Autowired
+    private SecurityUserRepository securityUserRepository;
 
     @Value("${catalogItemSavePath}")
     private String catalogItemSavePath;
@@ -110,5 +117,15 @@ public class CommonFunctions {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         return bufferedImage;
+    }
+
+    @Transactional
+    public void checkCreds() {
+        if (securityUserRepository.findAll().isEmpty()) {
+            SecurityUser securityUser = new SecurityUser();
+            securityUser.setName("admin");
+            securityUser.setPass(new BCryptPasswordEncoder().encode("admin"));
+            securityUserRepository.save(securityUser);
+        }
     }
 }
