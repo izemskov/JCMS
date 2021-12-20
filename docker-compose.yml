@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+  jcms_app:
+    build:
+      context: .
+      dockerfile: Dockerfile-jcms
+    depends_on:
+      - jcms_pgdocker    
+    ports:
+      - 8080:8080
+
+  jcms_pgdocker:
+    image: 'postgres:12.9'
+    container_name: jcms_pgdocker
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234567890
+      - POSTGRES_DB=jcms
+    

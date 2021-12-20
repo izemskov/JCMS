@@ -1,0 +1,9 @@
+FROM bellsoft/liberica-openjdk-centos:11
+RUN mkdir /JCMS
+RUN mkdir /JCMS/files
+RUN mkdir /JCMS/files/big
+RUN mkdir /JCMS/files/small
+COPY ../target/jcms-1.0.jar /JCMS
+CMD java -jar /JCMS/jcms-1.0.jar --spring.profiles.active=docker
+EXPOSE 8080:8080
+
