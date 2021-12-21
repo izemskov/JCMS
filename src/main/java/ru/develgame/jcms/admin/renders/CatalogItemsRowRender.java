@@ -31,11 +31,13 @@ public class CatalogItemsRowRender implements RowRenderer<CatalogItem> {
     public void render(Row row, CatalogItem catalogItem, int i) throws Exception {
         if (catalogItem.getPhoto() != null && !catalogItem.getPhoto().isEmpty()) {
             File file = new File(CommonFunctions.getStaticCatalogItemSavePathSmall(), catalogItem.getPhoto());
-            BufferedImage in = ImageIO.read(file);
-            Image image = new Image();
-            image.setContent(in);
-            image.setWidth("200px");
-            row.appendChild(image);
+            if (file.exists()) {
+                BufferedImage in = ImageIO.read(file);
+                Image image = new Image();
+                image.setContent(in);
+                image.setWidth("200px");
+                row.appendChild(image);
+            }
         }
         else {
             row.appendChild(new Label(""));

@@ -21,6 +21,7 @@ import ru.develgame.jcms.repositories.SecurityUserRepository;
 import javax.annotation.PostConstruct;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.List;
 
 @Component
@@ -126,6 +127,23 @@ public class CommonFunctions {
             securityUser.setName("admin");
             securityUser.setPass(new BCryptPasswordEncoder().encode("admin"));
             securityUserRepository.save(securityUser);
+        }
+    }
+
+    public void checkFileStrore() {
+        File file = new File(catalogItemSavePath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
+        file = new File(catalogItemSavePathSmall);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
+        file = new File(catalogItemSavePathBig);
+        if (!file.exists()) {
+            file.mkdirs();
         }
     }
 }

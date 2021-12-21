@@ -37,5 +37,6 @@ public class JCMS {
     public static void main(String[] args) {
         context = SpringApplication.run(JCMS.class, args);
         context.getBean(CommonFunctions.class).checkCreds();
+        context.getBean(CommonFunctions.class).checkFileStrore();
     }
 }
