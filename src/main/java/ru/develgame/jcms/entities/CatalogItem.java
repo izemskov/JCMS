@@ -26,6 +26,7 @@ public class CatalogItem {
     @ManyToMany(mappedBy = "catalogItems", fetch = FetchType.EAGER)
     private List<Catalog> catalogs = new ArrayList<>();
 
+    @Column(columnDefinition="TEXT")
     private String smallDescription;
 
     @Column(columnDefinition="TEXT")
